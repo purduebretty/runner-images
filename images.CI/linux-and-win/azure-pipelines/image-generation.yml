@@ -46,7 +46,7 @@ jobs:
   timeoutInMinutes: 600
   cancelTimeoutInMinutes: 30
   pool:
-    vmImage: ${{ parameters.agent_pool_image }}
+    vmImage: ubuntu-latest
   variables:
   - group: ${{ parameters.variable_group_name }}
 
