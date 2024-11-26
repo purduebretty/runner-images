@@ -68,7 +68,7 @@ jobs:
   - task: AzureCLI@2
     displayName: 'Set variables'
     inputs:
-      azureSubscription: 'spn-hosted-runners'
+      azureSubscription: 'sbx-devops(9ef945f3-a7b2-4faf-88cc-ac8dcb895895)'
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
