@@ -52,10 +52,6 @@ packer build    -var "client_id=$ClientId" `
                 -var "subscription_id=$SubscriptionId" `
                 -var "temp_resource_group_name=$TempResourceGroupName" `
                 -var "tenant_id=$TenantId" `
-                -var "virtual_network_name=$VirtualNetworkName" `
-                -var "virtual_network_resource_group_name=$VirtualNetworkRG" `
-                -var "virtual_network_subnet_name=$VirtualNetworkSubnet" `
-                -var "allowed_inbound_ip_addresses=$($AllowedInboundIpAddresses)" `
                 -var 'azure_tags={ApplicationName="SolarPath", BuildMethod="Manual", BusinessUnit="IT", Environment="SBX"}' `
                 -color=false `
                 $TemplatePath `
@@ -65,3 +61,8 @@ packer build    -var "client_id=$ClientId" `
             $sensitiveString = $SensitiveData | Where-Object { $currentString -match $_ }
             $sensitiveString -eq $null
         }
+
+        # -var "virtual_network_name=$VirtualNetworkName" `
+        # -var "virtual_network_resource_group_name=$VirtualNetworkRG" `
+        # -var "virtual_network_subnet_name=$VirtualNetworkSubnet" `
+        # -var "allowed_inbound_ip_addresses=$($AllowedInboundIpAddresses)" `
