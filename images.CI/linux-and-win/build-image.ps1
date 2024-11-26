@@ -56,7 +56,7 @@ packer build    -var "client_id=$ClientId" `
                 -var "virtual_network_resource_group_name=$VirtualNetworkRG" `
                 -var "virtual_network_subnet_name=$VirtualNetworkSubnet" `
                 -var "allowed_inbound_ip_addresses=$($AllowedInboundIpAddresses)" `
-                -var "azure_tags={ApplicationName=\"SolarPath\", BuildMethod=\"Manual\", BusinessUnit=\"IT\", Environment=\"SBX\"}" `
+                -var 'azure_tags={ApplicationName="SolarPath", BuildMethod="Manual", BusinessUnit="IT", Environment="SBX"}' `
                 -color=false `
                 $TemplatePath `
         | Where-Object {
