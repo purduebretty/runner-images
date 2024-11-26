@@ -18,10 +18,15 @@ parameters:
   - name: image_readme_name
     type: string
 
-  - name: agent_pool
+  # - name: agent_pool
+  #   type: object
+  #   default:
+  #     name: 'ci-agent-pool'
+
+  - name: agent_pool_image
     type: object
     default:
-      name: 'ci-agent-pool'
+      name: 'ubuntu-latest'
 
   - name: variable_group_name
     type: string
@@ -40,7 +45,8 @@ jobs:
   displayName: Image Generation (${{ parameters.image_type }})
   timeoutInMinutes: 600
   cancelTimeoutInMinutes: 30
-  pool: ${{ parameters.agent_pool }}
+  pool:
+    vmImage: ${{ parameters.agent_pool_image }}
   variables:
   - group: ${{ parameters.variable_group_name }}
 
@@ -81,8 +87,9 @@ jobs:
         $TempResourceGroupName = "packer-temp-$ManagedImageName"
         Write-Host "##vso[task.setvariable variable=TempResourceGroupName;]$TempResourceGroupName"
 
-        $clientSecret = $(az keyvault secret show --name "spnhostedrunners" --vault-name "gh-imagegeneration" --query value -o tsv)
-        Write-Host "##vso[task.setvariable variable=ClientSecret;issecret=true]$clientSecret"
+        # providing secret in var group
+        # $clientSecret = $(az keyvault secret show --name "spnhostedrunners" --vault-name "gh-imagegeneration" --query value -o tsv)
+        # Write-Host "##vso[task.setvariable variable=ClientSecret;issecret=true]$clientSecret"
 
   - task: PowerShell@2
     displayName: 'Build VM'
@@ -97,10 +104,13 @@ jobs:
                  -TempResourceGroupName "$(TempResourceGroupName)" `
                  -SubscriptionId $(AZURE_SUBSCRIPTION) `
                  -TenantId $(AZURE_TENANT) `
-                 -Location $(AZURE_LOCATION) `
-                 -VirtualNetworkName $(BUILD_AGENT_VNET_NAME) `
-                 -VirtualNetworkRG $(BUILD_AGENT_VNET_RESOURCE_GROUP) `
-                 -VirtualNetworkSubnet $(BUILD_AGENT_SUBNET_NAME)
+                 -Location $(AZURE_LOCATION)
+
+                #  Building not on VNET
+                #  -Location $(AZURE_LOCATION) `
+                #  -VirtualNetworkName $(BUILD_AGENT_VNET_NAME) `
+                #  -VirtualNetworkRG $(BUILD_AGENT_VNET_RESOURCE_GROUP) `
+                #  -VirtualNetworkSubnet $(BUILD_AGENT_SUBNET_NAME)
 
     env:
       PACKER_LOG: 1
